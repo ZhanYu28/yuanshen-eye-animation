@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/three.js"></script>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #music-button{
+            position: absolute;
+            top: 20px;
+            left: 100px;
+            cursor: pointer;
+        }
+        #music-button img{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="bg-music">
+        <audio src="music/desk-bgm.e1c8e207.mp3" loop autoplay></audio>
+    </div>
+    <div id="music-button">
+        <img id = "music-off" src="img/audio-off.89ea1960.png" alt="">
+        <img id = "music-on" src="img/audio-on.5e57c737.png" alt="">
+    </div>
+    <script>
+        //创建场景
+        var scene = new THREE.Scene();
+        // 创建相机
+        var camera = new THREE.PerspectiveCamera( 60, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        // 设置相机高度
+        camera.position.z = 5;
+        // 创建渲染器
+        var renderer = new THREE.WebGLRenderer();
+        // 设置渲染器大小
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        // 设置背景颜色
+        renderer.setClearColor(0xaaaaaa, 1)
+        // 将渲染器加入html
+        document.body.appendChild( renderer.domElement );
+
+        //创建辅助轴模型
+        var axes = new THREE.AxesHelper(50);
+        // 将模型添加到场景
+        scene.add(axes)
+
+        // 创建矩形模型
+        var plane = new THREE.PlaneGeometry(117,72);
+        // 创建基础材质
+        var planeMaterial = new THREE.MeshBasicMaterial();
+        // 创建纹理对象
+        var textureloader = new THREE.TextureLoader();
+        // 加载纹理图片
+        var bg = textureloader.load("img/77a3b856-6651-4956-85fa-8b05ad374dc5.jpg");
+        // 将纹理叠加到材质上
+        planeMaterial.map = bg
+        // 将材质叠加到模型上
+        var planeMesh = new THREE.Mesh(plane,planeMaterial);
+        // 移动模型
+        planeMesh.translateZ(-40);
+        // 将模型添加到场景
+        scene.add(planeMesh);
+
+        // 创建矩形模型
+        var pendantBox = new THREE.PlaneGeometry(15,11);
+        // 创建基础材质
+        var pendantMaterial = new THREE.MeshBasicMaterial();
+        // 创建纹理对象
+        var pendanttexture = new THREE.TextureLoader();
+        // 加载纹理图片
+        var pendanttextureload = pendanttexture.load("img/37b8e838-7b22-4f8d-b100-fe1464843236.png");
+        // 将纹理叠加到材质上
+        pendantMaterial.map = pendanttextureload;
+        //png图片透明部分开启
+        pendantMaterial.transparent = true;
+        pendantMaterial.opacity = 0;
+        // 将材质叠加到模型上
+        var pendantMesh = new THREE.Mesh(pendantBox,pendantMaterial);
+        // 移动模型
+        pendantMesh.translateX(4.8);
+        pendantMesh.translateY(0.7);
+        pendantMesh.translateZ(-25);
+        // 将模型添加到场景
+        scene.add(pendantMesh);
+
+        // 创建矩形模型
+        var pendantLightBox = new THREE.PlaneGeometry(15,11);
+        // 创建基础材质
+        var pendantLightMaterial = new THREE.MeshBasicMaterial();
+        // 创建纹理对象
+        var pendantLighttexture = new THREE.TextureLoader();
+        // 加载纹理图片
+        var pendantLighttextureload = pendantLighttexture.load("img/1fe2462e-7aaa-4c13-ad10-7ff6fa973d31.png");
+        // 将纹理叠加到材质上
+        pendantLightMaterial.map = pendantLighttextureload;
+        //png图片透明部分开启
+        pendantLightMaterial.transparent = true;
+        // 混合模式设置为叠加
+        pendantLightMaterial.blending = THREE.AdditiveBlending;
+        // 透明度设置为0
+        pendantLightMaterial.opacity = 0;
+        // 将材质叠加到模型上
+        var pendantLightMesh = new THREE.Mesh(pendantLightBox,pendantLightMaterial);
+        pendantLightMesh.name = "pendantLight";
+        // 移动模型
+        pendantLightMesh.translateX(5.5);
+        pendantLightMesh.translateY(1.6);
+        pendantLightMesh.translateZ(-30);
+        // 旋转模型
+        pendantLightMesh.rotation.x = -0.4;
+        pendantLightMesh.rotation.y = 0.2;
+        // 缩放模型
+        pendantLightMesh.scale.set(0.0,0.0,0.0);
+        // 将模型添加到场景
+        scene.add(pendantLightMesh);
+
+        // 创建矩形模型
+        var arrowsBox = new THREE.PlaneGeometry(3,3);
+        //创建基础材质
+        var arrowsMaterial = new THREE.MeshBasicMaterial();
+        // 创建纹理对象
+        var arrowsTexture = new THREE.TextureLoader();
+        // 加载纹理图片
+        var arrowsTextureload = arrowsTexture.load("img/8527e88b-685a-46cd-aec8-4ab73403dce3.png");
+        // 将纹理叠加到材质上
+        arrowsMaterial.map = arrowsTextureload;
+        // png图片透明部分开启
+        arrowsMaterial.transparent = true;
+        // 将材质叠加到模型上
+        var arrowsMesh = new THREE.Mesh(arrowsBox,arrowsMaterial);
+        // 移动模型
+        arrowsMesh.translateX(4)
+        arrowsMesh.translateZ(-24)
+        // 将模型添加到场景
+        scene.add(arrowsMesh);
+
+        // 创建矩形模型
+        var textplane = new THREE.PlaneGeometry(9,1.8);
+        // 创建基础材质
+        var textplaneMaterial = new THREE.MeshBasicMaterial();
+        // 创建纹理对象
+        var texttexture = new THREE.TextureLoader();
+        // 加载纹理图片
+        var text = textureloader.load("img/4546fc0e-f6ac-4360-8bfd-626091a7f2e7.png");
+        // 将纹理叠加到材质上
+        textplaneMaterial.map = text;
+        // png图片透明部分开启
+        textplaneMaterial.transparent = true;
+        // 将材质叠加到模型上
+        var textMesh = new THREE.Mesh(textplane,textplaneMaterial);//纹理贴图网格模型
+        // 移动模型
+        textMesh.translateX(1);
+        textMesh.translateY(-2.5);
+        textMesh.translateZ(-1);//平移纹理贴图网格模型
+        // 将模型添加到场景
+        scene.add(textMesh);//纹理贴图网格模型添加到场景中
+        
+        var lightplane = new THREE.PlaneGeometry(12,60);
+        var lightplaneMaterial = new THREE.MeshBasicMaterial();
+        var lighttexture = new THREE.TextureLoader();
+        var light = textureloader.load("img/b9047335-f041-4c4b-a7c3-449fd5d5ff7c.jpg");
+        lightplaneMaterial.map = light;
+        lightplaneMaterial.blending = THREE.AdditiveBlending;
+        lightplaneMaterial.transparent = true;
+        var lightMesh = new THREE.Mesh(lightplane,lightplaneMaterial);
+        lightMesh.translateX(-10);
+        lightMesh.translateY(10);
+        lightMesh.translateZ(-35);
+        lightMesh.rotation.z = -0.9;
+        scene.add(lightMesh);
+        
+        var lightplane2 = new THREE.PlaneGeometry(12,60);
+        var lightplaneMaterial2 = new THREE.MeshBasicMaterial();
+        var lighttexture2 = new THREE.TextureLoader();
+        var light2 = textureloader.load("img/b9047335-f041-4c4b-a7c3-449fd5d5ff7c.jpg");
+        lightplaneMaterial2.map = light2;
+        lightplaneMaterial2.blending = THREE.AdditiveBlending;
+        lightplaneMaterial2.transparent = true;
+        var lightMesh2 = new THREE.Mesh(lightplane2,lightplaneMaterial2);
+        lightMesh2.translateX(6);
+        lightMesh2.translateY(10);
+        lightMesh2.translateZ(-34);
+        lightMesh2.rotation.z = -0.9;
+        scene.add(lightMesh2);
+        
+        var lightplane2 = new THREE.PlaneGeometry(25,50);
+        var lightplaneMaterial2 = new THREE.MeshBasicMaterial();
+        var lighttexture2 = new THREE.TextureLoader();
+        var light2 = textureloader.load("img/b9047335-f041-4c4b-a7c3-449fd5d5ff7c.jpg");
+        lightplaneMaterial2.map = light2;
+        lightplaneMaterial2.blending = THREE.AdditiveBlending;
+        lightplaneMaterial2.transparent = true;
+        var lightMesh2 = new THREE.Mesh(lightplane2,lightplaneMaterial2);
+        lightMesh2.translateX(25);
+        lightMesh2.translateY(10);
+        lightMesh2.translateZ(-33);
+        lightMesh2.rotation.z = -0.8;
+        scene.add(lightMesh2);
+
+        // 创建关键帧
+        var inScaleTrack = new THREE.KeyframeTrack('pendantLight.scale', [0, 30], [0.5, 0.5, 0.5, 1, 1, 1]);
+        var inOpacityTrack = new THREE.KeyframeTrack('pendantLight.material.opacity', [0, 30], [0, 1]);
+        // 动画持续时间（帧）
+        var duration = 60;
+        // 创建剪辑对象
+        var clip = new THREE.AnimationClip("in", duration, [inScaleTrack,inOpacityTrack]);
+        // 创建混合器对象
+        var Mixer = new THREE.AnimationMixer(scene);
+        // 将剪辑对象放入混合器
+        var AnimationAction = Mixer.clipAction(clip);
+        // 设置动画播放速度，默认为1
+        AnimationAction.timeScale = 30;
+        // 设置动画循环，只执行一次
+        AnimationAction.loop = THREE.LoopOnce;
+        // 动画播放完成后停在最后一帧
+        AnimationAction.clampWhenFinished  = true;
+
+        // 储存每个点每一帧移动的量
+        let moveArrX = [];
+        let moveArrY = [];
+        // 储存每个点移动的时间
+        let moveTime = [];
+        // 当前时间
+        let nowTime = 0;
+        // 每个光点生成时间
+        let joinTime = [];
+        // 添加光点模型z（z轴位置），sc（缩放大小），i（y轴范围）
+        function addDot(z,sc,i = 1){
+            // 绘制时的时间
+            joinTime.push(Date.now());
+            // 绘制的坐标
+            moveArrX.push(Math.random()*0.02-0.01);  
+            moveArrY.push(Math.random()*0.02-0.01);
+            // 移动时间为10~20秒
+            moveTime.push(Math.round(Math.random()*10000+10000));
+            // 随机x轴为-50~50，y轴默认为-25~25
+            let randomX = Math.random()*100-50;
+            let randomY = Math.random()*50-25*i;
+            var dotPlane = new THREE.PlaneGeometry(1,1);
+            var dotPlaneMaterial = new THREE.MeshBasicMaterial();
+            var dotTexture = new THREE.TextureLoader();
+            var dotTextureload = dotTexture.load("img/d0d14aff-ecee-4449-806c-4a866163a7ce.jpg");
+            dotPlaneMaterial.map = dotTextureload;
+            dotPlaneMaterial.blending = THREE.AdditiveBlending;
+            dotPlaneMaterial.transparent = true;
+            var dotMesh = new THREE.Mesh(dotPlane,dotPlaneMaterial);
+            dotMesh.translateZ(z);
+            dotMesh.position.x = randomX*sc;
+            dotMesh.position.y = randomY*sc;
+            dotMesh.scale.set(sc,sc,sc);
+            group1.add(dotMesh);
+        }
+
+        // 创建一个组存放所有光点
+        let group1 = new THREE.Group();
+        // 循环创建最上层大光点
+        for(let i = 0;i<40;i++){
+            addDot(-39,1.3);
+        }
+        // 循环创建小光点
+        for(let j = 0;j<200;j++){
+            addDot(-29,0.3,0)
+        }
+        // 把组里所有模型添加到场景
+        scene.add(group1)
+
+        // 设置播放音量
+        var musicVolume = 1;
+        // 鼠标划过神之眼音效
+        function pendantMusic(){
+            // 创建audio标签
+            let audio = document.createElement("audio");
+            audio.src = "music/eye-mouseover.7d883e2b.mp3"
+            audio.autoplay = true;
+            // audio的音量
+            audio.volume = musicVolume;
+            document.body.appendChild(audio);
+            // 播放完成时移出标签
+            audio.addEventListener("ended",function(){
+                document.body.removeChild(audio);
+            })
+        }
+
+        let musicButton = document.querySelector("#music-button");
+        let musicOn = document.querySelector("#music-on");
+        let musicOff = document.querySelector("#music-off");
+        let bgMusic = document.querySelector("#bg-music audio");
+        // 把静音图标隐藏
+        musicOff.style.display = "none"
+        // 左上角音乐图标点击事件
+        function toggle(){
+            if(musicOff.style.display == "none"){
+                musicOff.style.display = "block"
+                musicOn.style.display = "none"
+                bgMusic.volume = 0;
+                musicVolume = 0;
+            }else{
+                bgMusic.volume = 1;
+                musicVolume = 1;
+                bgMusic.play();
+                musicOff.style.display = "none"
+                musicOn.style.display = "block"
+            }
+        }
+        musicButton.addEventListener("click",toggle);
+
+        // 鼠标移动事件
+        function mouseEvent(e){
+                camera.position.x = -(e.offsetX - window.innerWidth/2)/10000
+                camera.position.y = (e.offsetY - window.innerHeight/2)/4000
+                // 相机看向原点
+                camera.lookAt(scene.position);
+                // 鼠标在屏幕上的坐标
+                var Sx = e.clientX;
+                var Sy = e.clientY;
+                //屏幕坐标转标准设备坐标
+                var x = ( Sx / window.innerWidth ) * 2 - 1;
+                var y = -( Sy / window.innerHeight ) * 2 + 1;
+                var standardVector  = new THREE.Vector3(x, y, 0.5);
+                //标准设备坐标转三维坐标
+                var worldVector = standardVector.unproject(camera);
+                //射线投射方向单位向量(worldVector坐标减相机位置坐标)
+                var ray = worldVector.sub(camera.position).normalize();
+                //创建射线投射器对象
+                var raycaster = new THREE.Raycaster(camera.position, ray);
+                //返回射线选中的对象
+                var intersects = raycaster.intersectObjects([pendantMesh]);
+                if (intersects.length > 0) {
+                    if (animationstate) {
+                        // 动画状态不可播放
+                        animationstate = false;
+                        // 取消暂停
+                        AnimationAction.paused = false;
+                        // 播放的速度
+                        AnimationAction.timeScale = 120;
+                        // 播放动画
+                        AnimationAction.play();
+                        // 修改鼠标光标
+                        renderer.domElement.style.cursor = "pointer";
+                        // 创建音效并播放
+                        pendantMusic();
+                    }
+                    
+                }else{
+                    // 暂停播放
+                    AnimationAction.paused = true;
+                    // 播放速度
+                    AnimationAction.timeScale = -50;
+                    // 获取鼠标移出物体时在第几帧
+                    var timing = AnimationAction.time;
+                    // 从第几帧开始播放
+                    AnimationAction.tiem = timing;
+                    // 第几帧结束
+                    clip.duration = 30;
+                    // 取消暂停
+                    AnimationAction.paused = false;
+                    // 动画状态可播放
+                    animationstate = true;
+                    // 修改鼠标光标
+                    renderer.domElement.style.cursor = "default";
+                }
+            }
+        document.body.addEventListener("mousemove",mouseEvent);
+
+        function clickEvent(e){
+            // 鼠标在屏幕上的坐标
+            var Sx = e.clientX;
+                var Sy = e.clientY;
+                //屏幕坐标转标准设备坐标
+                var x = ( Sx / window.innerWidth ) * 2 - 1;
+                var y = -( Sy / window.innerHeight ) * 2 + 1;
+                var standardVector  = new THREE.Vector3(x, y, 0.5);
+                //标准设备坐标转三维坐标
+                var worldVector = standardVector.unproject(camera);
+                //射线投射方向单位向量(worldVector坐标减相机位置坐标)
+                var ray = worldVector.sub(camera.position).normalize();
+                //创建射线投射器对象
+                var raycaster = new THREE.Raycaster(camera.position, ray);
+                //返回射线选中的对象
+                var intersects = raycaster.intersectObjects([pendantMesh]);
+                if (intersects.length > 0) {
+                window.location = "https://www.baidu.com"
+                }
+        }
+        document.body.addEventListener("click",clickEvent)
+
+        // 创建一个时钟对象Clock
+        var clock = new THREE.Clock();
+        // 创建箭头正弦角度
+        var angle = 0;
+        // 创建光点正弦角度
+        var angle2 = 0;
+        // 创建渲染函数
+        var render = function (){
+            // 渲染相机和场景
+            renderer.render(scene,camera)
+            // 刷新混合器 
+            Mixer.update(clock.getDelta());
+            // 箭头上下移动
+            arrowsMesh.position.y = 9+Math.sin(angle)*0.5;
+            angle += 0.05;
+
+            // 遍历光点如果移动时间到了移除光点并重新创建一个随机光点
+            for(let i = 0;i<group1.children.length;i++){
+                nowTime = Date.now();
+                let item = group1.children[i]
+                item.position.x += moveArrX[i];
+                item.position.y += moveArrY[i];
+                if(nowTime - joinTime[i] < moveTime[i]){
+                    if(item.position.z == -39){
+                        item.material.opacity = 0.5 * ((Math.sin(angle2)+2.5)/3.5);
+                    }else{
+                        item.material.opacity =  0.5 * ((Math.sin(angle2)+4)/5);
+                    }
+                }else{
+                    item.material.opacity -= 0.0005; 
+                }
+                if(item.material.opacity <= 0){
+                    let itemArguments = [item.position.z,item.scale.x];
+                    group1.remove(item);
+                    moveArrX.splice(i,1);
+                    moveArrY.splice(i,1);
+                    moveTime.splice(i,1);
+                    joinTime.splice(i,1);
+                    addDot(...itemArguments);
+                }
+            }
+            angle2 +=0.03;
+            // 按当前设备帧数每秒回调多少次渲染，实现动画效果
+            requestAnimationFrame( render );
+        }
+        render()
+    </script>
+</body>
+</html>
